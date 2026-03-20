@@ -66,14 +66,23 @@
     font-size: 22px;
   }
 
-  .progress-container {
-    width: 100%;
-    background: #1e293b;
-    border-radius: 30px;
-    overflow: hidden;
-    border: 2px solid #38bdf8;
-    height: 40px; /* barra più alta */
-  }
+.progress-container {
+  position: relative; /* importante */
+  width: 100%;
+  background: #1e293b;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 2px solid #38bdf8;
+  height: 40px;
+}
+
+.trophy {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+}
 
   .progress-bar {
     height: 100%;
@@ -105,11 +114,34 @@
     {name: "Tommaso D.", minutes: 80, avatar: "tommasoD.png"}
   ];
 
-  const maxMinutes = Math.max(...data.map(p => p.minutes), 1);
+ const maxMinutes = 120;
   const container = document.getElementById("container");
 
   data.forEach(p => {
-    const percent = (p.minutes / maxMinutes) * 100;
+  const percent = Math.min((p.minutes / maxMinutes) * 100, 100);
+
+  const row = document.createElement("div");
+  row.className = "player";
+
+  const trophy = p.minutes >= 120 ? "🏆" : "";
+
+  row.innerHTML = `
+    <div class="player-header">
+      <img src="${p.avatar}" alt="${p.name}" class="avatar"
+           onerror="this.onerror=null;this.src='default.png';" />
+      <div class="name">${p.name}</div>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar" style="width:${percent}%"></div>
+      ${trophy ? `<div class="trophy">${trophy}</div>` : ""}
+    </div>
+
+    <div class="minutes">${p.minutes} min</div>
+  `;
+
+  container.appendChild(row);
+});
 
     const row = document.createElement("div");
     row.className = "player";
