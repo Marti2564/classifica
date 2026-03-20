@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Superhero English Challenge</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet" />
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    color: white;
+    margin: 0; padding: 0;
+    background: linear-gradient(180deg, #0a0f2c, #1e3a8a);
+  }
+
+  /* stelle */
+  body::before {
+    content: "";
+    position: fixed;
+    width: 100%; height: 100%;
+    background-image: radial-gradient(white 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.2;
+    z-index: -1;
+  }
+
+  h1 {
+    text-align: center;
+    font-family: 'Bangers', cursive;
+    font-size: 32px;
+    color: #facc15;
+    margin-top: 20px;
+    text-shadow: 3px 3px 0 #000, 0 0 15px #60a5fa;
+  }
+
+  .container {
+    width: 90%;
+    max-width: 600px;
+    margin: 30px auto;
+  }
+
+  .player {
+    display: flex;
+    flex-direction: column;
+    margin: 50px 0; /* più spazio tra righe */
+  }
+
+  .player-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 15%;
+    border: 2px solid #38bdf8;
+    object-fit: cover;
+  }
+
+  .name {
+    font-size: 22px;
+  }
+
+  .progress-container {
+    width: 100%;
+    background: #1e293b;
+    border-radius: 30px;
+    overflow: hidden;
+    border: 2px solid #38bdf8;
+    height: 40px; /* barra più alta */
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #4ade80);
+    width: 0%;
+    transition: width 0.6s;
+  }
+
+  .minutes {
+    text-align: right;
+    margin-top: 5px;
+    font-size: 14px;
+    opacity: 0.9;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>🦸 Superhero English Challenge</h1>
+
+<div class="container" id="container"></div>
+
+<script>
+  const data = [
+    {name: "Emma", minutes: 0, avatar: "default.png"}, // immagine di default LEGO supereroina
+    {name: "Lorenzo", minutes: 0, avatar: "lorenzo.png"},
+    {name: "Tommaso G.", minutes: 0, avatar: "tommasoG.png"},
+    {name: "Tommaso D.", minutes: 0, avatar: "tommasoD.png"}
+  ];
+
+  const maxMinutes = Math.max(...data.map(p => p.minutes), 1);
+  const container = document.getElementById("container");
+
+  data.forEach(p => {
+    const percent = (p.minutes / maxMinutes) * 100;
+
+    const row = document.createElement("div");
+    row.className = "player";
+
+    row.innerHTML = `
+      <div class="player-header">
+        <img src="${p.avatar}" alt="${p.name}" class="avatar"
+             onerror="this.onerror=null;this.src='default.png';" />
+        <div class="name">${p.name}</div>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar" style="width:${percent}%"></div>
+      </div>
+      <div class="minutes">${p.minutes} min</div>
+    `;
+
+    container.appendChild(row);
+  });
+</script>
+
+</body>
+</html>
